@@ -1,14 +1,19 @@
 #import "visuals.typ": adj-graph
 
-// --- 1. Graph Conversion & Matrix Logic ---
+// ============================================================================
+// PART 1: GRAPH CONVERSION & MATRIX TOOLS
+// ============================================================================
+
+// Convert Matrix to Graph (Supports Multigraphs)
 #let mat-to-graph(matrix) = {
   let n = matrix.len()
   let adj-list = (:)
+  
   for i in range(n) {
     let neighbors = ()
     for j in range(n) {
       let weight = matrix.at(i).at(j)
-      // Push 'j' multiple times if weight > 1 (multigraph support)
+      // Multigraph Support: Push 'j' as many times as the weight
       if weight > 0 {
         for k in range(weight) { neighbors.push(str(j)) }
       }
@@ -18,13 +23,18 @@
   adj-graph(adj-list)
 }
 
+// Print Adjacency Matrix
 #let print-adj-matrix(adj-list) = {
-  // Robustly handle string/int keys
+  // Robustly sort keys (int if possible, else str)
   let keys = adj-list.keys().map(x => if type(x) == str { int(x) } else { x }).sorted().map(str)
+  
   let rows = ()
   for u in keys {
     let row = ()
-    let neighbors = adj-list.at(u, default: ()).map(str)
+    // Ensure neighbors is an array
+    let neighbors-raw = adj-list.at(u, default: ())
+    let neighbors = if type(neighbors-raw) == array { neighbors-raw.map(str) } else { (str(neighbors-raw),) }
+    
     for v in keys {
       let count = neighbors.filter(x => x == v).len()
       row.push(count)
@@ -34,7 +44,11 @@
   math.mat(..rows)
 }
 
-// --- 2. Advanced Graph Operations ---
+// ============================================================================
+// PART 2: ADVANCED GRAPH OPERATIONS
+// ============================================================================
+
+// Complement Matrix
 #let complement-matrix(matrix) = {
   let n = matrix.len()
   let new-mat = ()
@@ -50,9 +64,11 @@
   new-mat
 }
 
+// Contract Edge (Super Vertex)
 #let contract-matrix(matrix, u, v) = {
   let n = matrix.len()
   let (keep, remove) = if u < v { (u, v) } else { (v, u) }
+  
   let new-mat = ()
   let active-indices = range(n).filter(i => i != remove)
   
@@ -71,6 +87,7 @@
   new-mat
 }
 
+// Disjoint Union
 #let union-matrix(mat1, mat2) = {
   let n1 = mat1.len()
   let n2 = mat2.len()
@@ -80,6 +97,7 @@
   rows
 }
 
+// Join (All-to-All)
 #let join-matrix(mat1, mat2) = {
   let n1 = mat1.len()
   let n2 = mat2.len()
@@ -89,7 +107,10 @@
   rows
 }
 
-// --- 3. Homework & Solutions ---
+// ============================================================================
+// PART 3: HOMEWORK & LAYOUT HELPERS
+// ============================================================================
+
 #let subfigures(..figs, captions: ()) = {
   let n = figs.pos().len()
   grid(
@@ -109,9 +130,9 @@
 
 #let solution(body) = context {
   if show-solutions.get() {
-    block(fill: rgb("#e3f2fd"), stroke: (left: 4pt + blue), inset: 1em, radius: 4pt, [*Solution:* \ #body])
+    block(fill: rgb("#e3f2fd"), stroke: (left: 4pt + blue), inset: 1em, radius: 4pt, width: 100%, [*Solution:* \ #body])
   } else {
-    block(fill: luma(250), stroke: (left: 4pt + gray), inset: 1em, radius: 4pt, text(fill: gray)[_(Solution hidden)_])
+    block(fill: luma(250), stroke: (left: 4pt + luma(150)), inset: 1em, radius: 4pt, width: 100%, text(fill: luma(150))[_(Solution hidden)_])
   }
 }
 
@@ -122,7 +143,7 @@
   problem-counter.step()
   part-counter.update(0)
   pad(top: 1em, bottom: 0.5em)[
-    #block(stroke: (bottom: 0.5pt + gray), width: 100%, inset: (bottom: 0.3em))[
+    #block(stroke: (bottom: 0.5pt + luma(150)), width: 100%, inset: (bottom: 0.3em))[
       #text(weight: "bold", size: 1.2em)[Problem #context problem-counter.display() #if title != none [ : #title ]]
       #h(1fr) #if points != none [ #text(style: "italic")[#points pts] ]
     ]
