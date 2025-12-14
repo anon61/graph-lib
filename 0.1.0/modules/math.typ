@@ -1,11 +1,10 @@
 #import "@preview/theorion:0.4.1" as theorion
 
 // --- 1. Semantic Math Aliases ---
+// User preferences: 'col' with standard chi, camelCase 'setBuilder'
 #let col(G) = $chi (#G)$ 
 #let deg(v) = $op("deg")(#v)$
 #let dist(u, v) = $op("dist")(#u, #v)$
-
-// FIX: Renamed to camelCase as requested
 #let setBuilder(elem, cond) = ${ #elem mid(|) #cond }$ 
 
 // --- 2. Advanced Theorem System ---

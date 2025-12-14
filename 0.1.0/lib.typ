@@ -2,7 +2,7 @@
 #import "modules/visuals.typ": diagram, node, edge, canvas, adj-graph, path-graph, cycle-graph
 #import "modules/math.typ": col, deg, dist, setBuilder, definition, example, init-theorems, set-theorem-mode, smart-theorem
 #import "modules/theorems.typ": lib as thm_db
-#import "modules/utils.typ": mat-to-graph, print-adj-matrix, subfigures, solution, set-solution-mode, problem, part
+#import "modules/utils.typ": mat-to-graph, print-adj-matrix, subfigures, solution, set-solution-mode, problem, part, complement-matrix, contract-matrix, union-matrix, join-matrix
 
 // --- Re-Exports ---
 #let diagram = diagram
@@ -22,10 +22,6 @@
 #let example = example
 #let theorem = smart-theorem
 #let set-theorem-mode = set-theorem-mode
-
-// --- THE ONE LINE FIX ---
-// We export the theorem database dictionary as 'thm'.
-// Users can type #thm.hall, #thm.whitney, etc.
 #let thm = thm_db
 
 #let mat-to-graph = mat-to-graph
@@ -36,14 +32,17 @@
 #let problem = problem
 #let part = part
 
+#let complement-matrix = complement-matrix
+#let contract-matrix = contract-matrix
+#let union-matrix = union-matrix
+#let join-matrix = join-matrix
+
 // --- Project Template ---
 #let project(title: "", authors: (), body) = {
   set document(title: title, author: authors)
   set page(margin: 1.75in, numbering: "1")
   set text(font: "New Computer Modern", size: 11pt)
   set heading(numbering: "1.1")
-  
-  // Initialize Systems
   show: init-theorems
 
   align(center)[

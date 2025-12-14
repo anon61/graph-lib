@@ -64,12 +64,12 @@
   dirac_critical: smart-theorem(
     "Dirac's Connectivity Theorem",
     [Every $(k+1)$-colour-critical graph is $k$-edge-connected.],
-    given: [$G$ is critical ($chi$ drops if any edge removed)],
+    given: [$G$ is critical ($col$ drops if any edge removed)],
     proof: [
       Suppose there is a small cut of size $j < k$ that splits $G$ into $A$ and $B$.
       Because $G$ is critical, $A$ and $B$ (plus the cut edges) are $k$-colorable on their own.
       We can permute the colors of $B$ so that they match the colors of $A$ at the cut edges (since there are few edges, we have freedom).
-      This would yield a $k$-coloring of the whole graph $G$, contradicting that $chi(G)=k+1$.
+      This would yield a $k$-coloring of the whole graph $G$, contradicting that $col(G)=k+1$.
     ]
   ),
 
@@ -135,7 +135,6 @@
   konig: smart-theorem(
     "König's Theorem",
     [In any bipartite graph, size of Max Matching = size of Min Vertex Cover. ($nu(G) = tau(G)$)],
-    // FIX: Removed 'statement:' because statement is already provided in the argument above
     proof: [
       Let $M$ be a max matching. Let $U$ be the set of unmatched vertices in $A$.
       Build a tree of alternating paths from $U$.
@@ -149,7 +148,6 @@
     "Tutte's Theorem",
     [A graph has a perfect matching iff for every subset $S$, the number of odd components in $G-S$ is at most $|S|$. \
      ($q(G-S) <= |S|$)],
-    // FIX: Removed 'statement:' duplicate
     proof: [
       *($=>$) Necessity:* If a component $C$ is odd, at least one vertex in $C$ must match to someone outside $C$ (in $S$). Since each odd component demands a partner in $S$, if there are more odd components than nodes in $S$, someone is left alone.
       *($<=$) Sufficiency:* Uses the "Berge-Tutte Formula". The deficit of a graph is exactly determined by the worst-case set $S$. If condition holds, deficit is 0.
@@ -185,7 +183,7 @@
 
   konig_line: smart-theorem(
     "König's Line Colouring Theorem",
-    [If $G$ is bipartite, $chi'(G) = Delta(G)$.],
+    [If $G$ is bipartite, $col'(G) = Delta(G)$.],
     proof: [
       We need to color edges with $Delta$ colors. Induction on edges.
       Suppose edge $u v$ is uncolored. Since $deg(u), deg(v) < Delta$ (in partial graph), there is a color missing at $u$ (say Red) and at $v$ (say Blue).
@@ -196,7 +194,7 @@
 
   vizing: smart-theorem(
     "Vizing's Theorem",
-    [For any simple graph, $Delta(G) <= chi'(G) <= Delta(G)+1$.],
+    [For any simple graph, $Delta(G) <= col'(G) <= Delta(G)+1$.],
     proof: [
       Clearly we need $Delta$ colors.
       To show $Delta+1$ is enough: Similar to König's proof but harder.
