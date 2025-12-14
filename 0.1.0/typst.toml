@@ -1,0 +1,6 @@
+[package]
+name = "graph-lib"
+version = "0.1.0"
+entrypoint = "lib.typ"
+authors = ["Asaf"]
+description = "Graph Theory OS v1.0 - Full Feature Set"
