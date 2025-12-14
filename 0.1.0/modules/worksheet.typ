@@ -9,6 +9,8 @@
   gray: rgb("#f5f5f5")        // Light Grey: Neutral backgrounds
 )
 
+#let pencil = symbol("✏️")
+
 // --- TITLE PAGE ENGINE ---
 #let worksheet-title(
   title: "Homework",
@@ -161,7 +163,7 @@
       inset: 1em
     )[
       // A subtle pencil icon to indicate writing space
-      #place(center + horizon, text(fill: gray.lighten(20%), size: 24pt)[#sym.pencil])
+      #place(center + horizon, text(fill: gray.lighten(20%), size: 24pt)[#pencil])
     ]
   }
   

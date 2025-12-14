@@ -17,12 +17,12 @@
   adj-list, 
   radius: 2cm, 
   layout: "circular", 
-  partitions: (), // NEW: For bipartite layout (("u", "v"), ("w", "x"))
+  partitions: (), 
   highlight-nodes: (),
-  highlight-path: (), // NEW: List of node names for path highlighting
+  highlight-path: (), 
   highlight-color: rgb("#fff9c4"),
   path-color: blue,
-  custom-colors: (:) // NEW: ("node_name": color)
+  custom-colors: (:) 
 ) = {
   // Helper: robust string conversion
   let to-str(x) = str(x)
@@ -46,13 +46,19 @@
       
       // Override if partitions provided
       if partitions.len() == 2 {
-         let p0 = partitions.at(0).map(to-str)
+         let p0-raw = partitions.at(0)
+         // FIX: Ensure p0 is an array before mapping
+         let p0 = if type(p0-raw) == array { p0-raw.map(to-str) } else { (to-str(p0-raw),) }
+         
          if p0.contains(v-str) {
            is-left = true
            rank = p0.position(x => x == v-str)
          } else {
            is-left = false
-           let p1 = partitions.at(1).map(to-str)
+           let p1-raw = partitions.at(1)
+           // FIX: Ensure p1 is an array
+           let p1 = if type(p1-raw) == array { p1-raw.map(to-str) } else { (to-str(p1-raw),) }
+           
            let r = p1.position(x => x == v-str)
            if r != none { rank = r }
          }
@@ -75,7 +81,11 @@
   let edges = ()
   for raw-u in raw-vertices {
     let u-str = to-str(raw-u)
-    let neighbors = adj-list.at(raw-u)
+    let neighbors-raw = adj-list.at(raw-u)
+    
+    // FIX: Ensure neighbors is always an array (handle "a": "b" case)
+    let neighbors = if type(neighbors-raw) == array { neighbors-raw } else { (neighbors-raw,) }
+    
     // Handle multigraphs (duplicates in neighbors list)
     let unique-neighbors = neighbors.map(to-str).dedup()
     
